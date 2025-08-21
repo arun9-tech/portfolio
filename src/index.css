@@ -1,0 +1,326 @@
+/* ======================================== */
+/* 1. Global Styles & Variables             */
+/* ======================================== */
+
+:root {
+  --background: #000000;
+  --text: #f0f0f0;
+  --primary: #8E2DE2;
+  --secondary: #4A00E0;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  /* THE FIX: We ensure the cursor is set to its default state here. */
+  cursor: default;
+}
+
+/* 
+  THE FIX: The problematic `* { cursor: none !important; }` has been DELETED. 
+  All other custom cursor styles have also been DELETED.
+*/
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--primary), var(--secondary));
+  border-radius: 4px;
+}
+
+/* ======================================== */
+/* 3. Layout & Section Styles             */
+/* ======================================== */
+
+.scrollable-content {
+  position: relative;
+  z-index: 2;
+  background: var(--background);
+}
+
+.section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 8rem 2rem;
+  position: relative;
+}
+
+.section-title-container {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.section-title {
+  position: relative;
+  font-size: 3rem;
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  padding-bottom: 1rem;
+}
+
+.section-title-underline {
+  height: 4px;
+  width: 100px;
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  margin: 0 auto;
+}
+
+/* ======================================== */
+/* 4. Hero Section                          */
+/* ======================================== */
+
+.hero-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 1;
+}
+
+.hero-container > div:first-of-type {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  pointer-events: none;
+}
+
+.hero-title h1 {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  margin: 0;
+  text-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+}
+
+.hero-title p {
+  font-size: clamp(1rem, 4vw, 1.5rem);
+  opacity: 0.8;
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+/* --- In src/index.css --- */
+/* --- REPLACE ALL YOUR SKILL STYLES WITH THIS BLOCK --- */
+
+/* This style for the title container is correct */
+.section-title-container {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+/* This is CRUCIAL for the 3D effect. It sets the "camera" distance. */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 2rem;
+  perspective: 1000px; /* This enables the 3D space */
+}
+
+/* --- ALL ANIMATIONS ARE NOW DEFINED --- */
+
+/* Animation 1: The continuous border glow */
+@keyframes subtle-breathing-glow {
+  0% { border-color: rgba(255, 255, 255, 0.1); }
+  50% { border-color: rgba(255, 255, 255, 0.3); }
+  100% { border-color: rgba(255, 255, 255, 0.1); }
+}
+
+/* Animation 2: The logo's pulsing glow on hover */
+@keyframes pulse-glow {
+  0% { filter: drop-shadow(0 0 5px var(--logo-color)); }
+  50% { filter: drop-shadow(0 0 20px var(--logo-color)); }
+  100% { filter: drop-shadow(0 0 5px var(--logo-color)); }
+}
+
+/* --- STYLES FOR THE CARDS AND LOGOS --- */
+
+.skill-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transform-style: preserve-3d;
+  
+  /* Apply the continuous breathing animation to the border */
+  animation: subtle-breathing-glow 4s infinite ease-in-out;
+}
+
+.skill-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  /* This makes the content "float" above the card when it tilts */
+  transform: translateZ(40px);
+}
+
+.skill-logo {
+  height: 60px;
+  width: 60px;
+  color: var(--logo-color);
+  /* We remove all transitions and animations from the default state */
+}
+
+/* THE FIX IS HERE: We re-apply the pulse-glow animation on hover */
+.skill-card:hover .skill-logo {
+  animation: pulse-glow 1.5s infinite ease-in-out;
+}
+
+.skill-card h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text);
+}
+/* ======================================== */
+/* 6. Projects Section                      */
+/* ======================================== */
+
+/* In index.css, replace the old .projects-grid and .project-card styles */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.project-card {
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden; /* This is crucial for the image zoom effect */
+  height: 250px;
+  background-color: #222;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.project-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.2));
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+.view-project-btn {
+  padding: 0.5rem 1rem;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin-top: 1rem;
+  align-self: flex-start;
+  font-weight: bold;
+}
+
+/* ======================================== */
+/* 7. Contact Form Section                  */
+/* ======================================== */
+
+.contact-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+  /* padding is handled by parent .section */
+  text-align: center;
+  position: relative;
+}
+
+.input-container {
+  width: 100%;
+}
+
+.contact-input,
+.contact-textarea {
+  width: 100%;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: text; /* Show text cursor on inputs */
+}
+
+.contact-textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.contact-input:focus,
+.contact-textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 15px rgba(142, 45, 226, 0.5);
+}
+
+.submit-button {
+  position: relative;
+  overflow: hidden;
+  padding: 1rem 2rem;
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  margin-top: 1rem;
+  cursor: pointer; /* Show pointer on the button */
+}
+
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.7);
+  transform-origin: center;
+}
+/* Add this new style to index.css */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  transform-origin: 0%; /* Ensures it scales from the left */
+  z-index: 10000;
+}
